@@ -16,7 +16,6 @@
       background: #f5f5f5;
       display: flex;
       justify-content: center;
-      align-items: flex-start;
       min-height: 100vh;
     }
 
@@ -24,11 +23,10 @@
       width: 390px;
       min-height: 100vh;
       background: #f5f5f5;
-      position: relative;
       overflow: hidden;
     }
 
-    /* Status Bar */
+    /* ── Status Bar ── */
     .status-bar {
       display: flex;
       justify-content: space-between;
@@ -49,12 +47,6 @@
       gap: 5px;
     }
 
-    .status-icons svg {
-      width: 16px;
-      height: 16px;
-      fill: #000;
-    }
-
     .battery-indicator {
       display: flex;
       align-items: center;
@@ -72,8 +64,8 @@
       border-radius: 4px;
     }
 
-    /* Header */
-    .header {
+    /* ── Header ── */
+    .site-header {
       background: #fff;
       padding: 10px 20px 0;
     }
@@ -85,7 +77,8 @@
       padding-bottom: 12px;
     }
 
-    .header-title {
+    /* h1 – 페이지 대제목 */
+    .site-header h1 {
       font-size: 22px;
       font-weight: 700;
       color: #111;
@@ -113,29 +106,36 @@
       height: 24px;
     }
 
-    /* Tab Bar */
-    .tab-bar {
+    /* ── Tab Navigation ── */
+    .tab-nav {
       display: flex;
       border-bottom: 1px solid #e8e8e8;
+      list-style: none;
     }
 
-    .tab {
+    .tab-nav li {
       flex: 1;
-      text-align: center;
+    }
+
+    .tab-btn {
+      width: 100%;
+      background: none;
+      border: none;
+      cursor: pointer;
       padding: 12px 0;
       font-size: 16px;
       font-weight: 500;
       color: #999;
-      cursor: pointer;
       position: relative;
+      transition: color 0.15s;
     }
 
-    .tab.active {
+    .tab-btn[aria-selected="true"] {
       color: #111;
       font-weight: 700;
     }
 
-    .tab.active::after {
+    .tab-btn[aria-selected="true"]::after {
       content: '';
       position: absolute;
       bottom: -1px;
@@ -145,7 +145,16 @@
       background: #111;
     }
 
-    /* Ad Banner */
+    /* ── Tab Panels ── */
+    .tab-panel {
+      display: none;
+    }
+
+    .tab-panel.active {
+      display: block;
+    }
+
+    /* ── Ad Banner ── */
     .ad-banner {
       background: #fff;
       display: flex;
@@ -167,27 +176,16 @@
       border-radius: 3px;
     }
 
-    .ad-image {
+    .ad-thumb {
       width: 72px;
       height: 72px;
       border-radius: 8px;
       background: linear-gradient(135deg, #1a5276, #2980b9);
       flex-shrink: 0;
       display: flex;
-      align-items: center;
-      justify-content: center;
-      overflow: hidden;
-      position: relative;
-    }
-
-    .ad-image-inner {
-      width: 100%;
-      height: 100%;
-      display: flex;
-      flex-direction: column;
-      justify-content: flex-end;
-      align-items: flex-start;
+      align-items: flex-end;
       padding: 6px;
+      overflow: hidden;
     }
 
     .ad-discount-badge {
@@ -204,14 +202,15 @@
       padding-right: 36px;
     }
 
-    .ad-title {
+    /* h3 – 광고 제목 */
+    .ad-content h3 {
       font-size: 15px;
       font-weight: 700;
       color: #111;
       margin-bottom: 4px;
     }
 
-    .ad-subtitle {
+    .ad-sub {
       font-size: 13px;
       color: #555;
       margin-bottom: 2px;
@@ -222,20 +221,21 @@
       color: #999;
     }
 
-    /* Section */
-    .section {
+    /* ── Section ── */
+    .noti-section {
       padding: 16px 16px 8px;
     }
 
-    .section-title {
+    /* h2 – 섹션 제목 */
+    .noti-section h2 {
       font-size: 15px;
       font-weight: 700;
       color: #111;
       margin-bottom: 10px;
     }
 
-    /* Notification Card */
-    .notification-card {
+    /* ── Notification Card ── */
+    .noti-card {
       background: #fff;
       border-radius: 12px;
       padding: 16px;
@@ -243,14 +243,14 @@
       position: relative;
     }
 
-    .notification-header {
+    .noti-card-header {
       display: flex;
       align-items: center;
       gap: 8px;
       margin-bottom: 8px;
     }
 
-    .notification-icon {
+    .noti-icon {
       width: 28px;
       height: 28px;
       border-radius: 50%;
@@ -258,37 +258,30 @@
       display: flex;
       align-items: center;
       justify-content: center;
-      font-size: 12px;
-      font-weight: 700;
-    }
-
-    .icon-naver-plus {
-      background: #03c75a;
-      color: #fff;
       font-size: 10px;
       font-weight: 800;
-      letter-spacing: -0.5px;
-    }
-
-    .icon-juyoung {
-      background: #1a5276;
       color: #fff;
-      font-size: 9px;
+      line-height: 1.2;
+      text-align: center;
     }
 
-    .notification-sender {
+    .noti-icon--naver-plus  { background: #03c75a; letter-spacing: -0.5px; }
+    .noti-icon--juyoung     { background: #1a5276; font-size: 9px; }
+    .noti-icon--pay         { background: #03c75a; border-radius: 4px; width: 32px; height: 20px; font-size: 9px; }
+    .noti-icon--travel      { background: #1ec800; font-size: 9px; }
+
+    .noti-sender {
       font-size: 14px;
       font-weight: 600;
       color: #111;
     }
 
-    .notification-time {
+    .noti-time {
       font-size: 12px;
       color: #999;
-      margin-left: 4px;
     }
 
-    .notification-more {
+    .noti-more-btn {
       position: absolute;
       top: 14px;
       right: 14px;
@@ -301,33 +294,39 @@
       padding: 0 4px;
     }
 
-    .notification-subject {
+    /* h3 – 알림 제목 */
+    .noti-card h3 {
       font-size: 14px;
       font-weight: 700;
       color: #111;
       margin-bottom: 6px;
     }
 
-    .notification-body {
+    .noti-body {
       font-size: 13px;
       color: #555;
       line-height: 1.5;
     }
 
-    /* Previous Notifications */
+    .noti-more-link {
+      font-size: 12px;
+      color: #888;
+      margin-top: 6px;
+    }
+
+    /* ── Filter Bar ── */
     .filter-bar {
       display: flex;
       gap: 8px;
       overflow-x: auto;
       padding: 0 16px 12px;
       scrollbar-width: none;
+      list-style: none;
     }
 
-    .filter-bar::-webkit-scrollbar {
-      display: none;
-    }
+    .filter-bar::-webkit-scrollbar { display: none; }
 
-    .filter-chip {
+    .filter-btn {
       flex-shrink: 0;
       padding: 8px 16px;
       border-radius: 20px;
@@ -337,183 +336,245 @@
       border: 1px solid #e0e0e0;
       background: #fff;
       color: #555;
+      transition: background 0.15s, color 0.15s;
     }
 
-    .filter-chip.active {
+    .filter-btn[aria-pressed="true"] {
       background: #111;
       color: #fff;
       border-color: #111;
     }
 
-    .filter-chip.more {
+    .filter-btn--more {
       padding: 8px 10px;
       display: flex;
       align-items: center;
     }
 
-    /* Point/Pay Notification */
-    .icon-pay {
-      background: #03c75a;
-      color: #fff;
-      font-size: 10px;
-      font-weight: 700;
-      border-radius: 4px !important;
-      width: 28px;
-      height: 20px;
-      border-radius: 4px;
-    }
-
-    .notification-more-link {
-      font-size: 12px;
-      color: #888;
-      margin-top: 6px;
-    }
-
-    .icon-naver-travel {
-      background: #1ec800;
-      color: #fff;
-    }
-
-    /* Divider */
+    /* ── Divider ── */
     .divider {
       height: 8px;
       background: #f5f5f5;
     }
+
+    /* ── 대화 탭 placeholder ── */
+    .chat-empty {
+      padding: 60px 20px;
+      text-align: center;
+      color: #aaa;
+      font-size: 14px;
+    }
   </style>
 </head>
 <body>
-  <div class="phone-frame">
+<div class="phone-frame">
 
-    <!-- Status Bar -->
-    <div class="status-bar">
-      <span class="status-time">15:14 ▶</span>
-      <div class="status-icons">
-        <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-          <path d="M1 1l22 22M16.72 11.06A10.94 10.94 0 0 1 19 12.55M5 12.55a10.94 10.94 0 0 1 5.17-2.39M10.71 5.05A16 16 0 0 1 22.56 9M1.42 9a15.91 15.91 0 0 1 4.7-2.88M8.53 16.11a6 6 0 0 1 6.95 0M12 20h.01" stroke="#000" stroke-width="2" fill="none" stroke-linecap="round"/>
-        </svg>
-        <div class="battery-indicator">
-          <span>5G</span>
-          <span class="battery-box">60</span>
-        </div>
+  <!-- Status Bar (장식용 – 시맨틱 역할 없음) -->
+  <div class="status-bar" aria-hidden="true">
+    <span class="status-time">15:14 ▶</span>
+    <div class="status-icons">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#000" stroke-width="2" stroke-linecap="round">
+        <path d="M5 12.55a11 11 0 0 1 14.08 0M1.42 9a16 16 0 0 1 21.16 0M8.53 16.11a6 6 0 0 1 6.95 0M12 20h.01"/>
+      </svg>
+      <div class="battery-indicator">
+        <span>5G</span>
+        <span class="battery-box">60</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- Site Header -->
+  <header class="site-header">
+    <div class="header-top">
+      <h1>알림센터</h1>
+      <div class="header-icons">
+        <button class="icon-btn" type="button" aria-label="알림 설정">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="12" cy="12" r="3"/>
+            <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83-2.83l.06-.06A1.65 1.65 0 0 0 4.68 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 2.83-2.83l.06.06A1.65 1.65 0 0 0 9 4.68a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 2.83l-.06.06A1.65 1.65 0 0 0 19.4 9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/>
+          </svg>
+        </button>
+        <button class="icon-btn" type="button" aria-label="닫기">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round">
+            <line x1="18" y1="6" x2="6" y2="18"/>
+            <line x1="6" y1="6" x2="18" y2="18"/>
+          </svg>
+        </button>
       </div>
     </div>
 
-    <!-- Header -->
-    <div class="header">
-      <div class="header-top">
-        <span class="header-title">알림센터</span>
-        <div class="header-icons">
-          <button class="icon-btn" aria-label="설정">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-              <circle cx="12" cy="12" r="3"/>
-              <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83-2.83l.06-.06A1.65 1.65 0 0 0 4.68 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 2.83-2.83l.06.06A1.65 1.65 0 0 0 9 4.68a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 2.83l-.06.06A1.65 1.65 0 0 0 19.4 9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/>
-            </svg>
-          </button>
-          <button class="icon-btn" aria-label="닫기">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round">
-              <line x1="18" y1="6" x2="6" y2="18"/>
-              <line x1="6" y1="6" x2="18" y2="18"/>
-            </svg>
-          </button>
-        </div>
-      </div>
+    <!-- Tab Navigation -->
+    <nav aria-label="알림센터 탭">
+      <ul class="tab-nav" role="tablist">
+        <li role="presentation">
+          <button
+            class="tab-btn"
+            type="button"
+            role="tab"
+            id="tab-noti"
+            aria-controls="panel-noti"
+            aria-selected="true"
+          >알림</button>
+        </li>
+        <li role="presentation">
+          <button
+            class="tab-btn"
+            type="button"
+            role="tab"
+            id="tab-chat"
+            aria-controls="panel-chat"
+            aria-selected="false"
+          >대화</button>
+        </li>
+      </ul>
+    </nav>
+  </header>
 
-      <!-- Tab Bar -->
-      <div class="tab-bar">
-        <div class="tab active">알림</div>
-        <div class="tab">대화</div>
-      </div>
-    </div>
+  <!-- ── 알림 패널 ── -->
+  <div
+    id="panel-noti"
+    class="tab-panel active"
+    role="tabpanel"
+    aria-labelledby="tab-noti"
+  >
 
-    <!-- Ad Banner -->
-    <div class="ad-banner">
-      <div class="ad-image">
-        <div class="ad-image-inner">
-          <div class="ad-discount-badge">46% 할인</div>
-        </div>
+    <!-- 광고 배너 -->
+    <aside class="ad-banner" aria-label="광고">
+      <div class="ad-thumb" aria-hidden="true">
+        <span class="ad-discount-badge">46% 할인</span>
       </div>
       <div class="ad-content">
-        <div class="ad-title">관절엔 콘드로이친 1200</div>
-        <div class="ad-subtitle">헬시페스타 특가!</div>
-        <div class="ad-category">건강기능식품광고</div>
+        <h3>관절엔 콘드로이친 1200</h3>
+        <p class="ad-sub">헬시페스타 특가!</p>
+        <p class="ad-category">건강기능식품광고</p>
       </div>
       <span class="ad-label">AD</span>
-    </div>
+    </aside>
 
     <div class="divider"></div>
 
-    <!-- Today's Notifications -->
-    <div class="section">
-      <div class="section-title">오늘 받은 알림</div>
+    <!-- 오늘 받은 알림 -->
+    <section class="noti-section" aria-label="오늘 받은 알림">
+      <h2>오늘 받은 알림</h2>
 
-      <!-- Naver Plus Store -->
-      <div class="notification-card">
-        <div class="notification-header">
-          <div class="notification-icon icon-naver-plus">N+</div>
-          <span class="notification-sender">네이버플러스 스토어</span>
-          <span class="notification-time">· 4시간 전</span>
-        </div>
-        <button class="notification-more">⋮</button>
-        <div class="notification-subject">🔥 가구 빅 페스타 🔥</div>
-        <div class="notification-body">쭈리님, 네이버 고객들이 많이 찾은 가구 브랜드 단 일주일만 특가 할인해요 👉</div>
-      </div>
+      <!-- 네이버플러스 스토어 -->
+      <article class="noti-card">
+        <header class="noti-card-header">
+          <span class="noti-icon noti-icon--naver-plus" aria-hidden="true">N+</span>
+          <strong class="noti-sender">네이버플러스 스토어</strong>
+          <time class="noti-time">· 4시간 전</time>
+        </header>
+        <button class="noti-more-btn" type="button" aria-label="더보기">⋮</button>
+        <h3>🔥 가구 빅 페스타 🔥</h3>
+        <p class="noti-body">쭈리님, 네이버 고객들이 많이 찾은 가구 브랜드 단 일주일만 특가 할인해요 👉</p>
+      </article>
 
-      <!-- Juyoung NS -->
-      <div class="notification-card">
-        <div class="notification-header">
-          <div class="notification-icon icon-juyoung">주영<br>NS</div>
-          <span class="notification-sender">주영엔에스</span>
-          <span class="notification-time">· 5시간 전</span>
-        </div>
-        <button class="notification-more">⋮</button>
-        <div class="notification-subject">🎁 콘드로이친&뼈엔엠비피 본사 특가</div>
-        <div class="notification-body">✨ 본사 최대 특가 ✨ 헬시페스타 종료 하루 전! 오늘 아침 11시에는 특별 라이브 혜택까지 🎉</div>
-      </div>
-    </div>
+      <!-- 주영엔에스 -->
+      <article class="noti-card">
+        <header class="noti-card-header">
+          <span class="noti-icon noti-icon--juyoung" aria-hidden="true">주영<br>NS</span>
+          <strong class="noti-sender">주영엔에스</strong>
+          <time class="noti-time">· 5시간 전</time>
+        </header>
+        <button class="noti-more-btn" type="button" aria-label="더보기">⋮</button>
+        <h3>🎁 콘드로이친&amp;뼈엔엠비피 본사 특가</h3>
+        <p class="noti-body">✨ 본사 최대 특가 ✨ 헬시페스타 종료 하루 전! 오늘 아침 11시에는 특별 라이브 혜택까지 🎉</p>
+      </article>
+    </section>
 
     <div class="divider"></div>
 
-    <!-- Previous Notifications -->
-    <div class="section">
-      <div class="section-title">이전 알림</div>
-    </div>
+    <!-- 이전 알림 -->
+    <section class="noti-section" aria-label="이전 알림">
+      <h2>이전 알림</h2>
+    </section>
 
-    <!-- Filter Chips -->
-    <div class="filter-bar">
-      <div class="filter-chip active">전체</div>
-      <div class="filter-chip">중요알림</div>
-      <div class="filter-chip">결제·배송</div>
-      <div class="filter-chip">혜택·이벤트</div>
-      <div class="filter-chip more">
-        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round">
-          <polyline points="6 9 12 15 18 9"/>
-        </svg>
-      </div>
-    </div>
+    <!-- 필터 -->
+    <ul class="filter-bar" role="list" aria-label="알림 필터">
+      <li>
+        <button class="filter-btn" type="button" aria-pressed="true">전체</button>
+      </li>
+      <li>
+        <button class="filter-btn" type="button" aria-pressed="false">중요알림</button>
+      </li>
+      <li>
+        <button class="filter-btn" type="button" aria-pressed="false">결제·배송</button>
+      </li>
+      <li>
+        <button class="filter-btn" type="button" aria-pressed="false">혜택·이벤트</button>
+      </li>
+      <li>
+        <button class="filter-btn filter-btn--more" type="button" aria-label="더보기">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round">
+            <polyline points="6 9 12 15 18 9"/>
+          </svg>
+        </button>
+      </li>
+    </ul>
 
-    <!-- Point Notification -->
+    <!-- 이전 알림 카드 목록 -->
     <div style="padding: 0 16px;">
-      <div class="notification-card">
-        <div class="notification-header">
-          <div class="notification-icon icon-pay" style="background:#03c75a; border-radius:4px; font-size:9px; font-weight:800; color:#fff; width:32px; height:20px; display:flex; align-items:center; justify-content:center;">pay</div>
-          <span class="notification-sender">포인트적립</span>
-          <span class="notification-time">· 어제 오후 10:24</span>
-        </div>
-        <button class="notification-more">⋮</button>
-        <div class="notification-body">[컬리N마트] [브로클린688] 호주... 포인트 112원이 적립되었어요.</div>
-        <div class="notification-more-link">+2 알림 더보기</div>
-      </div>
 
-      <!-- Naver Travel (partially visible) -->
-      <div class="notification-card" style="overflow:hidden; max-height:48px;">
-        <div class="notification-header">
-          <div class="notification-icon icon-naver-travel" style="background:#1ec800; color:#fff; font-size:9px;">N여행</div>
-          <span class="notification-sender">네이버여행샵픽</span>
-          <span class="notification-time">· 어제 오후 08:5...</span>
-        </div>
-      </div>
+      <!-- 포인트적립 -->
+      <article class="noti-card">
+        <header class="noti-card-header">
+          <span class="noti-icon noti-icon--pay" aria-hidden="true">pay</span>
+          <strong class="noti-sender">포인트적립</strong>
+          <time class="noti-time">· 어제 오후 10:24</time>
+        </header>
+        <button class="noti-more-btn" type="button" aria-label="더보기">⋮</button>
+        <p class="noti-body">[컬리N마트] [브로클린688] 호주... 포인트 112원이 적립되었어요.</p>
+        <p class="noti-more-link">+2 알림 더보기</p>
+      </article>
+
+      <!-- 네이버여행샵픽 (부분 노출) -->
+      <article class="noti-card" style="overflow:hidden; max-height:48px;">
+        <header class="noti-card-header">
+          <span class="noti-icon noti-icon--travel" aria-hidden="true">N여행</span>
+          <strong class="noti-sender">네이버여행샵픽</strong>
+          <time class="noti-time">· 어제 오후 08:5...</time>
+        </header>
+      </article>
+
     </div>
+  </div><!-- /panel-noti -->
 
+  <!-- ── 대화 패널 ── -->
+  <div
+    id="panel-chat"
+    class="tab-panel"
+    role="tabpanel"
+    aria-labelledby="tab-chat"
+  >
+    <p class="chat-empty">대화 내역이 없습니다.</p>
   </div>
+
+</div><!-- /phone-frame -->
+
+<script>
+  /* ── 탭 전환 ── */
+  const tabBtns = document.querySelectorAll('.tab-btn');
+  const panels  = document.querySelectorAll('.tab-panel');
+
+  tabBtns.forEach(btn => {
+    btn.addEventListener('click', () => {
+      tabBtns.forEach(b => b.setAttribute('aria-selected', 'false'));
+      panels.forEach(p => p.classList.remove('active'));
+
+      btn.setAttribute('aria-selected', 'true');
+      document.getElementById(btn.getAttribute('aria-controls')).classList.add('active');
+    });
+  });
+
+  /* ── 이전 알림 필터 칩 ── */
+  const filterBtns = document.querySelectorAll('.filter-btn:not(.filter-btn--more)');
+
+  filterBtns.forEach(btn => {
+    btn.addEventListener('click', () => {
+      filterBtns.forEach(b => b.setAttribute('aria-pressed', 'false'));
+      btn.setAttribute('aria-pressed', 'true');
+    });
+  });
+</script>
 </body>
 </html>
