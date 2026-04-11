@@ -5,371 +5,243 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0" />
   <title>알림센터</title>
   <style>
-    * {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
-    }
+    * { margin: 0; padding: 0; box-sizing: border-box; }
 
     body {
       font-family: -apple-system, 'Apple SD Gothic Neo', 'Noto Sans KR', sans-serif;
-      background: #f5f5f5;
+      background: #e0e0e0;
       display: flex;
       justify-content: center;
+      align-items: flex-start;
       min-height: 100vh;
     }
 
+    /* ── 폰 프레임: 고정 높이 + flex 컬럼 ── */
     .phone-frame {
       width: 390px;
-      min-height: 100vh;
+      height: 844px;
       background: #f5f5f5;
+      display: flex;
+      flex-direction: column;
       overflow: hidden;
+      position: relative;
     }
 
     /* ── Status Bar ── */
     .status-bar {
+      flex-shrink: 0;
       display: flex;
       justify-content: space-between;
       align-items: center;
       padding: 12px 20px 6px;
       background: #fff;
     }
-
-    .status-time {
-      font-size: 15px;
-      font-weight: 600;
-      color: #000;
-    }
-
-    .status-icons {
-      display: flex;
-      align-items: center;
-      gap: 5px;
-    }
-
-    .battery-indicator {
-      display: flex;
-      align-items: center;
-      gap: 3px;
-      font-size: 12px;
-      font-weight: 600;
-    }
-
+    .status-time { font-size: 15px; font-weight: 600; color: #000; }
+    .status-icons { display: flex; align-items: center; gap: 5px; }
+    .battery-indicator { display: flex; align-items: center; gap: 3px; font-size: 12px; font-weight: 600; }
     .battery-box {
-      background: #f5c518;
-      color: #000;
-      font-size: 11px;
-      font-weight: 700;
-      padding: 2px 5px;
-      border-radius: 4px;
+      background: #f5c518; color: #000;
+      font-size: 11px; font-weight: 700;
+      padding: 2px 5px; border-radius: 4px;
     }
 
-    /* ── Header ── */
+    /* ── Site Header ── */
     .site-header {
+      flex-shrink: 0;
       background: #fff;
       padding: 10px 20px 0;
     }
-
     .header-top {
       display: flex;
       justify-content: space-between;
       align-items: center;
       padding-bottom: 12px;
     }
-
-    /* h1 – 페이지 대제목 */
-    .site-header h1 {
-      font-size: 22px;
-      font-weight: 700;
-      color: #111;
-    }
-
-    .header-icons {
-      display: flex;
-      gap: 16px;
-      align-items: center;
-    }
-
+    .site-header h1 { font-size: 22px; font-weight: 700; color: #111; }
+    .header-icons { display: flex; gap: 16px; align-items: center; }
     .icon-btn {
-      background: none;
-      border: none;
-      cursor: pointer;
-      padding: 4px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      color: #333;
+      background: none; border: none; cursor: pointer;
+      padding: 4px; display: flex; align-items: center;
+      justify-content: center; color: #333;
     }
-
-    .icon-btn svg {
-      width: 24px;
-      height: 24px;
-    }
+    .icon-btn svg { width: 24px; height: 24px; }
 
     /* ── Tab Navigation ── */
-    .tab-nav {
-      display: flex;
-      border-bottom: 1px solid #e8e8e8;
-      list-style: none;
-    }
-
-    .tab-nav li {
-      flex: 1;
-    }
-
+    .tab-nav { display: flex; border-bottom: 1px solid #e8e8e8; list-style: none; }
+    .tab-nav li { flex: 1; }
     .tab-btn {
-      width: 100%;
-      background: none;
-      border: none;
-      cursor: pointer;
-      padding: 12px 0;
-      font-size: 16px;
-      font-weight: 500;
-      color: #999;
-      position: relative;
-      transition: color 0.15s;
+      width: 100%; background: none; border: none; cursor: pointer;
+      padding: 12px 0; font-size: 16px; font-weight: 500;
+      color: #999; position: relative; transition: color 0.15s;
     }
-
-    .tab-btn[aria-selected="true"] {
-      color: #111;
-      font-weight: 700;
-    }
-
+    .tab-btn[aria-selected="true"] { color: #111; font-weight: 700; }
     .tab-btn[aria-selected="true"]::after {
-      content: '';
-      position: absolute;
-      bottom: -1px;
-      left: 0;
-      right: 0;
-      height: 2px;
-      background: #111;
+      content: ''; position: absolute;
+      bottom: -1px; left: 0; right: 0;
+      height: 2px; background: #111;
     }
 
     /* ── Tab Panels ── */
-    .tab-panel {
-      display: none;
-    }
-
-    .tab-panel.active {
-      display: block;
-    }
+    .tab-panel { display: none; flex: 1; overflow: hidden; flex-direction: column; }
+    .tab-panel.active { display: flex; }
 
     /* ── Ad Banner ── */
     .ad-banner {
-      background: #fff;
-      display: flex;
-      align-items: center;
-      padding: 12px 16px;
-      gap: 12px;
-      position: relative;
-      margin-bottom: 8px;
-    }
-
-    .ad-label {
-      position: absolute;
-      top: 12px;
-      right: 12px;
-      font-size: 11px;
-      color: #999;
-      border: 1px solid #ddd;
-      padding: 2px 6px;
-      border-radius: 3px;
-    }
-
-    .ad-thumb {
-      width: 72px;
-      height: 72px;
-      border-radius: 8px;
-      background: linear-gradient(135deg, #1a5276, #2980b9);
       flex-shrink: 0;
-      display: flex;
-      align-items: flex-end;
-      padding: 6px;
-      overflow: hidden;
+      background: #fff;
+      display: flex; align-items: center;
+      padding: 12px 16px; gap: 12px;
+      position: relative;
     }
-
+    .ad-label {
+      position: absolute; top: 12px; right: 12px;
+      font-size: 11px; color: #999;
+      border: 1px solid #ddd; padding: 2px 6px; border-radius: 3px;
+    }
+    .ad-thumb {
+      width: 72px; height: 72px; border-radius: 8px;
+      background: linear-gradient(135deg, #1a5276, #2980b9);
+      flex-shrink: 0; display: flex; align-items: flex-end;
+      padding: 6px; overflow: hidden;
+    }
     .ad-discount-badge {
-      background: #e74c3c;
-      color: #fff;
-      font-size: 11px;
-      font-weight: 700;
-      padding: 2px 5px;
-      border-radius: 3px;
+      background: #e74c3c; color: #fff;
+      font-size: 11px; font-weight: 700;
+      padding: 2px 5px; border-radius: 3px;
     }
+    .ad-content { flex: 1; padding-right: 36px; }
+    .ad-content h3 { font-size: 15px; font-weight: 700; color: #111; margin-bottom: 4px; }
+    .ad-sub { font-size: 13px; color: #555; margin-bottom: 2px; }
+    .ad-category { font-size: 11px; color: #999; }
 
-    .ad-content {
-      flex: 1;
-      padding-right: 36px;
-    }
-
-    /* h3 – 광고 제목 */
-    .ad-content h3 {
-      font-size: 15px;
-      font-weight: 700;
-      color: #111;
-      margin-bottom: 4px;
-    }
-
-    .ad-sub {
-      font-size: 13px;
-      color: #555;
-      margin-bottom: 2px;
-    }
-
-    .ad-category {
-      font-size: 11px;
-      color: #999;
-    }
-
-    /* ── Section ── */
-    .noti-section {
+    /* ── Today Section ── */
+    .today-section {
+      flex-shrink: 0;
       padding: 16px 16px 8px;
     }
+    .today-section h2 { font-size: 15px; font-weight: 700; color: #111; margin-bottom: 10px; }
 
-    /* h2 – 섹션 제목 */
-    .noti-section h2 {
-      font-size: 15px;
-      font-weight: 700;
-      color: #111;
-      margin-bottom: 10px;
+    /* ── Divider ── */
+    .divider { flex-shrink: 0; height: 8px; background: #f5f5f5; }
+
+    /* ── 이전 알림 영역: inner scroll ── */
+    .prev-noti-area {
+      flex: 1;
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+      background: #f5f5f5;
+    }
+
+    /* sticky: 제목 + 필터바 */
+    .prev-noti-sticky {
+      flex-shrink: 0;
+      background: #f5f5f5;
+      padding-top: 16px;
+    }
+    .prev-noti-sticky h2 {
+      font-size: 15px; font-weight: 700; color: #111;
+      padding: 0 16px 10px;
+    }
+
+    /* 필터 바 */
+    .filter-bar {
+      display: flex; gap: 8px;
+      overflow-x: auto; padding: 0 16px 12px;
+      scrollbar-width: none; list-style: none;
+    }
+    .filter-bar::-webkit-scrollbar { display: none; }
+    .filter-btn {
+      flex-shrink: 0; padding: 8px 16px;
+      border-radius: 20px; font-size: 13px; font-weight: 500;
+      cursor: pointer; border: 1px solid #e0e0e0;
+      background: #fff; color: #555;
+      transition: background 0.15s, color 0.15s;
+    }
+    .filter-btn[aria-pressed="true"] {
+      background: #111; color: #fff; border-color: #111;
+    }
+    .filter-btn--more {
+      padding: 8px 10px; display: flex; align-items: center;
+    }
+
+    /* 스크롤 바디 */
+    .prev-noti-scroll {
+      flex: 1;
+      overflow-y: auto;
+      padding: 0 16px 24px;
+      scroll-behavior: smooth;
+    }
+    .prev-noti-scroll::-webkit-scrollbar { width: 4px; }
+    .prev-noti-scroll::-webkit-scrollbar-thumb { background: #ccc; border-radius: 2px; }
+
+    /* 카테고리 앵커 헤더 */
+    .cat-header {
+      font-size: 12px; font-weight: 600; color: #aaa;
+      padding: 12px 0 6px;
+      letter-spacing: 0.3px;
     }
 
     /* ── Notification Card ── */
     .noti-card {
-      background: #fff;
-      border-radius: 12px;
-      padding: 16px;
-      margin-bottom: 8px;
+      background: #fff; border-radius: 12px;
+      padding: 16px; margin-bottom: 8px;
       position: relative;
     }
-
     .noti-card-header {
-      display: flex;
-      align-items: center;
-      gap: 8px;
-      margin-bottom: 8px;
+      display: flex; align-items: center;
+      gap: 8px; margin-bottom: 8px;
     }
-
     .noti-icon {
-      width: 28px;
-      height: 28px;
-      border-radius: 50%;
-      flex-shrink: 0;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 10px;
-      font-weight: 800;
-      color: #fff;
-      line-height: 1.2;
-      text-align: center;
+      width: 28px; height: 28px; border-radius: 50%;
+      flex-shrink: 0; display: flex; align-items: center;
+      justify-content: center; font-size: 10px; font-weight: 800;
+      color: #fff; line-height: 1.2; text-align: center;
     }
+    .noti-icon--naver-plus { background: #03c75a; letter-spacing: -0.5px; }
+    .noti-icon--juyoung   { background: #1a5276; font-size: 9px; }
+    .noti-icon--pay       { background: #03c75a; border-radius: 4px; width: 32px; height: 20px; font-size: 9px; }
+    .noti-icon--travel    { background: #1ec800; font-size: 9px; }
+    .noti-icon--security  { background: #e74c3c; font-size: 9px; }
+    .noti-icon--delivery  { background: #f39c12; font-size: 9px; }
+    .noti-icon--benefit   { background: #8e44ad; font-size: 9px; }
 
-    .noti-icon--naver-plus  { background: #03c75a; letter-spacing: -0.5px; }
-    .noti-icon--juyoung     { background: #1a5276; font-size: 9px; }
-    .noti-icon--pay         { background: #03c75a; border-radius: 4px; width: 32px; height: 20px; font-size: 9px; }
-    .noti-icon--travel      { background: #1ec800; font-size: 9px; }
-
-    .noti-sender {
-      font-size: 14px;
-      font-weight: 600;
-      color: #111;
-    }
-
-    .noti-time {
-      font-size: 12px;
-      color: #999;
-    }
+    .noti-sender { font-size: 14px; font-weight: 600; color: #111; }
+    .noti-time   { font-size: 12px; color: #999; }
 
     .noti-more-btn {
-      position: absolute;
-      top: 14px;
-      right: 14px;
-      background: none;
-      border: none;
-      cursor: pointer;
-      color: #bbb;
-      font-size: 18px;
-      line-height: 1;
-      padding: 0 4px;
+      position: absolute; top: 14px; right: 14px;
+      background: none; border: none; cursor: pointer;
+      color: #bbb; font-size: 18px; line-height: 1; padding: 0 4px;
     }
+    .noti-card h3 { font-size: 14px; font-weight: 700; color: #111; margin-bottom: 6px; }
+    .noti-body   { font-size: 13px; color: #555; line-height: 1.5; }
 
-    /* h3 – 알림 제목 */
-    .noti-card h3 {
-      font-size: 14px;
-      font-weight: 700;
-      color: #111;
-      margin-bottom: 6px;
+    /* 더보기 버튼 (카드 내부) */
+    .expand-btn {
+      display: inline-flex; align-items: center; gap: 4px;
+      margin-top: 8px; padding: 0;
+      background: none; border: none; cursor: pointer;
+      font-size: 12px; color: #03c75a; font-weight: 600;
     }
+    .expand-btn svg { transition: transform 0.2s; }
+    .expand-btn.expanded svg { transform: rotate(180deg); }
 
-    .noti-body {
-      font-size: 13px;
-      color: #555;
-      line-height: 1.5;
-    }
+    /* 숨겨진 추가 알림 */
+    .extra-cards { display: none; }
+    .extra-cards.visible { display: block; }
 
-    .noti-more-link {
-      font-size: 12px;
-      color: #888;
-      margin-top: 6px;
-    }
-
-    /* ── Filter Bar ── */
-    .filter-bar {
-      display: flex;
-      gap: 8px;
-      overflow-x: auto;
-      padding: 0 16px 12px;
-      scrollbar-width: none;
-      list-style: none;
-    }
-
-    .filter-bar::-webkit-scrollbar { display: none; }
-
-    .filter-btn {
-      flex-shrink: 0;
-      padding: 8px 16px;
-      border-radius: 20px;
-      font-size: 13px;
-      font-weight: 500;
-      cursor: pointer;
-      border: 1px solid #e0e0e0;
-      background: #fff;
-      color: #555;
-      transition: background 0.15s, color 0.15s;
-    }
-
-    .filter-btn[aria-pressed="true"] {
-      background: #111;
-      color: #fff;
-      border-color: #111;
-    }
-
-    .filter-btn--more {
-      padding: 8px 10px;
-      display: flex;
-      align-items: center;
-    }
-
-    /* ── Divider ── */
-    .divider {
-      height: 8px;
-      background: #f5f5f5;
-    }
-
-    /* ── 대화 탭 placeholder ── */
+    /* ── 대화 탭 ── */
     .chat-empty {
-      padding: 60px 20px;
-      text-align: center;
-      color: #aaa;
-      font-size: 14px;
+      padding: 60px 20px; text-align: center;
+      color: #aaa; font-size: 14px;
     }
   </style>
 </head>
 <body>
 <div class="phone-frame">
 
-  <!-- Status Bar (장식용 – 시맨틱 역할 없음) -->
+  <!-- Status Bar -->
   <div class="status-bar" aria-hidden="true">
     <span class="status-time">15:14 ▶</span>
     <div class="status-icons">
@@ -403,40 +275,22 @@
       </div>
     </div>
 
-    <!-- Tab Navigation -->
     <nav aria-label="알림센터 탭">
       <ul class="tab-nav" role="tablist">
         <li role="presentation">
-          <button
-            class="tab-btn"
-            type="button"
-            role="tab"
-            id="tab-noti"
-            aria-controls="panel-noti"
-            aria-selected="true"
-          >알림</button>
+          <button class="tab-btn" type="button" role="tab"
+            id="tab-noti" aria-controls="panel-noti" aria-selected="true">알림</button>
         </li>
         <li role="presentation">
-          <button
-            class="tab-btn"
-            type="button"
-            role="tab"
-            id="tab-chat"
-            aria-controls="panel-chat"
-            aria-selected="false"
-          >대화</button>
+          <button class="tab-btn" type="button" role="tab"
+            id="tab-chat" aria-controls="panel-chat" aria-selected="false">대화</button>
         </li>
       </ul>
     </nav>
   </header>
 
-  <!-- ── 알림 패널 ── -->
-  <div
-    id="panel-noti"
-    class="tab-panel active"
-    role="tabpanel"
-    aria-labelledby="tab-noti"
-  >
+  <!-- ══════════ 알림 패널 ══════════ -->
+  <div id="panel-noti" class="tab-panel active" role="tabpanel" aria-labelledby="tab-noti">
 
     <!-- 광고 배너 -->
     <aside class="ad-banner" aria-label="광고">
@@ -454,10 +308,9 @@
     <div class="divider"></div>
 
     <!-- 오늘 받은 알림 -->
-    <section class="noti-section" aria-label="오늘 받은 알림">
+    <section class="today-section" aria-label="오늘 받은 알림">
       <h2>오늘 받은 알림</h2>
 
-      <!-- 네이버플러스 스토어 -->
       <article class="noti-card">
         <header class="noti-card-header">
           <span class="noti-icon noti-icon--naver-plus" aria-hidden="true">N+</span>
@@ -469,7 +322,6 @@
         <p class="noti-body">쭈리님, 네이버 고객들이 많이 찾은 가구 브랜드 단 일주일만 특가 할인해요 👉</p>
       </article>
 
-      <!-- 주영엔에스 -->
       <article class="noti-card">
         <header class="noti-card-header">
           <span class="noti-icon noti-icon--juyoung" aria-hidden="true">주영<br>NS</span>
@@ -484,68 +336,169 @@
 
     <div class="divider"></div>
 
-    <!-- 이전 알림 -->
-    <section class="noti-section" aria-label="이전 알림">
-      <h2>이전 알림</h2>
-    </section>
+    <!-- ══ 이전 알림 영역 (inner scroll) ══ -->
+    <div class="prev-noti-area">
 
-    <!-- 필터 -->
-    <ul class="filter-bar" role="list" aria-label="알림 필터">
-      <li>
-        <button class="filter-btn" type="button" aria-pressed="true">전체</button>
-      </li>
-      <li>
-        <button class="filter-btn" type="button" aria-pressed="false">중요알림</button>
-      </li>
-      <li>
-        <button class="filter-btn" type="button" aria-pressed="false">결제·배송</button>
-      </li>
-      <li>
-        <button class="filter-btn" type="button" aria-pressed="false">혜택·이벤트</button>
-      </li>
-      <li>
-        <button class="filter-btn filter-btn--more" type="button" aria-label="더보기">
-          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round">
-            <polyline points="6 9 12 15 18 9"/>
-          </svg>
-        </button>
-      </li>
-    </ul>
+      <!-- sticky 헤더 + 필터 -->
+      <div class="prev-noti-sticky">
+        <h2>이전 알림</h2>
+        <ul class="filter-bar" role="list" aria-label="알림 필터">
+          <li>
+            <button class="filter-btn" type="button" aria-pressed="true" data-target="cat-all">전체</button>
+          </li>
+          <li>
+            <button class="filter-btn" type="button" aria-pressed="false" data-target="cat-important">중요알림</button>
+          </li>
+          <li>
+            <button class="filter-btn" type="button" aria-pressed="false" data-target="cat-payment">결제·배송</button>
+          </li>
+          <li>
+            <button class="filter-btn" type="button" aria-pressed="false" data-target="cat-benefit">혜택·이벤트</button>
+          </li>
+          <li>
+            <button class="filter-btn filter-btn--more" type="button" aria-label="카테고리 더보기">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round">
+                <polyline points="6 9 12 15 18 9"/>
+              </svg>
+            </button>
+          </li>
+        </ul>
+      </div>
 
-    <!-- 이전 알림 카드 목록 -->
-    <div style="padding: 0 16px;">
+      <!-- 스크롤 바디 -->
+      <div class="prev-noti-scroll" id="prevScroll">
 
-      <!-- 포인트적립 -->
-      <article class="noti-card">
-        <header class="noti-card-header">
-          <span class="noti-icon noti-icon--pay" aria-hidden="true">pay</span>
-          <strong class="noti-sender">포인트적립</strong>
-          <time class="noti-time">· 어제 오후 10:24</time>
-        </header>
-        <button class="noti-more-btn" type="button" aria-label="더보기">⋮</button>
-        <p class="noti-body">[컬리N마트] [브로클린688] 호주... 포인트 112원이 적립되었어요.</p>
-        <p class="noti-more-link">+2 알림 더보기</p>
-      </article>
+        <!-- ── 중요알림 ── -->
+        <div id="cat-important">
+          <p class="cat-header">중요알림</p>
 
-      <!-- 네이버여행샵픽 (부분 노출) -->
-      <article class="noti-card" style="overflow:hidden; max-height:48px;">
-        <header class="noti-card-header">
-          <span class="noti-icon noti-icon--travel" aria-hidden="true">N여행</span>
-          <strong class="noti-sender">네이버여행샵픽</strong>
-          <time class="noti-time">· 어제 오후 08:5...</time>
-        </header>
-      </article>
+          <article class="noti-card">
+            <header class="noti-card-header">
+              <span class="noti-icon noti-icon--security" aria-hidden="true">보안</span>
+              <strong class="noti-sender">네이버 보안센터</strong>
+              <time class="noti-time">· 어제 오후 11:02</time>
+            </header>
+            <button class="noti-more-btn" type="button" aria-label="더보기">⋮</button>
+            <h3>⚠️ 새로운 기기에서 로그인 감지</h3>
+            <p class="noti-body">Windows · Chrome에서 로그인이 확인되었어요. 본인이 아니라면 즉시 비밀번호를 변경하세요.</p>
+          </article>
 
-    </div>
+          <article class="noti-card">
+            <header class="noti-card-header">
+              <span class="noti-icon noti-icon--naver-plus" aria-hidden="true">N+</span>
+              <strong class="noti-sender">네이버페이</strong>
+              <time class="noti-time">· 어제 오후 03:15</time>
+            </header>
+            <button class="noti-more-btn" type="button" aria-label="더보기">⋮</button>
+            <h3>💳 결제 한도 초과 안내</h3>
+            <p class="noti-body">이번 달 네이버페이 결제 한도의 80%에 도달했어요. 한도를 확인하고 필요시 조정하세요.</p>
+          </article>
+        </div>
+
+        <!-- ── 결제·배송 ── -->
+        <div id="cat-payment">
+          <p class="cat-header">결제·배송</p>
+
+          <!-- 포인트적립 (더보기 그룹) -->
+          <article class="noti-card">
+            <header class="noti-card-header">
+              <span class="noti-icon noti-icon--pay" aria-hidden="true">pay</span>
+              <strong class="noti-sender">포인트적립</strong>
+              <time class="noti-time">· 어제 오후 10:24</time>
+            </header>
+            <button class="noti-more-btn" type="button" aria-label="더보기">⋮</button>
+            <p class="noti-body">[컬리N마트] [브로클린688] 호주... 포인트 112원이 적립되었어요.</p>
+
+            <!-- 숨겨진 추가 알림 2건 -->
+            <div class="extra-cards" id="extra-point" aria-live="polite">
+              <div style="border-top: 1px solid #f0f0f0; margin-top: 10px; padding-top: 10px;">
+                <p class="noti-body">[올리브영] 구매 포인트 450원이 적립되었어요.</p>
+              </div>
+              <div style="border-top: 1px solid #f0f0f0; margin-top: 10px; padding-top: 10px;">
+                <p class="noti-body">[무신사] 리뷰 작성 포인트 200원이 적립되었어요.</p>
+              </div>
+            </div>
+
+            <button class="expand-btn" type="button"
+              aria-expanded="false" aria-controls="extra-point" id="expandBtn">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round">
+                <polyline points="6 9 12 15 18 9"/>
+              </svg>
+              +2 알림 더보기
+            </button>
+          </article>
+
+          <article class="noti-card">
+            <header class="noti-card-header">
+              <span class="noti-icon noti-icon--delivery" aria-hidden="true">배송</span>
+              <strong class="noti-sender">쿠팡 로켓배송</strong>
+              <time class="noti-time">· 어제 오후 02:40</time>
+            </header>
+            <button class="noti-more-btn" type="button" aria-label="더보기">⋮</button>
+            <h3>📦 배송이 시작되었어요</h3>
+            <p class="noti-body">주문하신 [에어팟 프로 2세대] 상품이 출고되었어요. 오늘 밤 도착 예정이에요.</p>
+          </article>
+
+          <article class="noti-card">
+            <header class="noti-card-header">
+              <span class="noti-icon noti-icon--delivery" aria-hidden="true">배송</span>
+              <strong class="noti-sender">컬리</strong>
+              <time class="noti-time">· 이틀 전 오전 07:10</time>
+            </header>
+            <button class="noti-more-btn" type="button" aria-label="더보기">⋮</button>
+            <h3>✅ 배송이 완료되었어요</h3>
+            <p class="noti-body">[브로클린688] 호주산 소고기 외 2건이 문 앞에 도착했어요.</p>
+          </article>
+        </div>
+
+        <!-- ── 혜택·이벤트 ── -->
+        <div id="cat-benefit">
+          <p class="cat-header">혜택·이벤트</p>
+
+          <article class="noti-card">
+            <header class="noti-card-header">
+              <span class="noti-icon noti-icon--travel" aria-hidden="true">N여행</span>
+              <strong class="noti-sender">네이버여행샵픽</strong>
+              <time class="noti-time">· 어제 오후 08:53</time>
+            </header>
+            <button class="noti-more-btn" type="button" aria-label="더보기">⋮</button>
+            <h3>✈️ 봄 시즌 특가 항공권 오픈!</h3>
+            <p class="noti-body">쭈리님이 즐겨 찾는 제주 노선, 편도 29,900원부터 시작해요. 오늘 자정 마감!</p>
+          </article>
+
+          <article class="noti-card">
+            <header class="noti-card-header">
+              <span class="noti-icon noti-icon--benefit" aria-hidden="true">혜택</span>
+              <strong class="noti-sender">네이버플러스 멤버십</strong>
+              <time class="noti-time">· 이틀 전 오전 10:00</time>
+            </header>
+            <button class="noti-more-btn" type="button" aria-label="더보기">⋮</button>
+            <h3>🎉 이달의 멤버십 혜택이 업데이트됐어요</h3>
+            <p class="noti-body">4월 한 달간 네이버 웹툰 100% 캐시백, OTT 무료 이용권 제공! 지금 확인해보세요.</p>
+          </article>
+
+          <article class="noti-card">
+            <header class="noti-card-header">
+              <span class="noti-icon noti-icon--benefit" aria-hidden="true">혜택</span>
+              <strong class="noti-sender">올리브영</strong>
+              <time class="noti-time">· 이틀 전 오전 09:30</time>
+            </header>
+            <button class="noti-more-btn" type="button" aria-label="더보기">⋮</button>
+            <h3>🌸 올영세일 D-1 미리보기</h3>
+            <p class="noti-body">내일부터 시작되는 올영세일! 장바구니 담아두고 자정에 바로 구매하세요 🛒</p>
+          </article>
+        </div>
+
+        <!-- 하단 여백 -->
+        <div id="cat-all" style="height: 1px;"></div>
+
+      </div><!-- /prev-noti-scroll -->
+    </div><!-- /prev-noti-area -->
+
   </div><!-- /panel-noti -->
 
-  <!-- ── 대화 패널 ── -->
-  <div
-    id="panel-chat"
-    class="tab-panel"
-    role="tabpanel"
-    aria-labelledby="tab-chat"
-  >
+  <!-- ══════════ 대화 패널 ══════════ -->
+  <div id="panel-chat" class="tab-panel" role="tabpanel" aria-labelledby="tab-chat">
     <p class="chat-empty">대화 내역이 없습니다.</p>
   </div>
 
@@ -553,27 +506,67 @@
 
 <script>
   /* ── 탭 전환 ── */
-  const tabBtns = document.querySelectorAll('.tab-btn');
-  const panels  = document.querySelectorAll('.tab-panel');
-
-  tabBtns.forEach(btn => {
+  document.querySelectorAll('.tab-btn').forEach(btn => {
     btn.addEventListener('click', () => {
-      tabBtns.forEach(b => b.setAttribute('aria-selected', 'false'));
-      panels.forEach(p => p.classList.remove('active'));
-
+      document.querySelectorAll('.tab-btn').forEach(b => b.setAttribute('aria-selected', 'false'));
+      document.querySelectorAll('.tab-panel').forEach(p => p.classList.remove('active'));
       btn.setAttribute('aria-selected', 'true');
       document.getElementById(btn.getAttribute('aria-controls')).classList.add('active');
     });
   });
 
-  /* ── 이전 알림 필터 칩 ── */
-  const filterBtns = document.querySelectorAll('.filter-btn:not(.filter-btn--more)');
+  /* ── 필터 버튼 → 이전 알림 내 해당 섹션으로 스크롤 ── */
+  const prevScroll  = document.getElementById('prevScroll');
+  const filterBtns  = document.querySelectorAll('.filter-btn:not(.filter-btn--more)');
 
   filterBtns.forEach(btn => {
     btn.addEventListener('click', () => {
+      // 활성 상태 갱신
       filterBtns.forEach(b => b.setAttribute('aria-pressed', 'false'));
       btn.setAttribute('aria-pressed', 'true');
+
+      const targetId = btn.dataset.target;
+      if (!targetId) return;
+
+      if (targetId === 'cat-all') {
+        // 전체 → 최상단으로
+        prevScroll.scrollTo({ top: 0, behavior: 'smooth' });
+      } else {
+        const target = document.getElementById(targetId);
+        if (!target) return;
+        // 스크롤 컨테이너 기준 상대 위치로 이동
+        const offsetTop = target.offsetTop - prevScroll.offsetTop;
+        prevScroll.scrollTo({ top: offsetTop, behavior: 'smooth' });
+      }
     });
+  });
+
+  /* ── 더보기 버튼 → 숨겨진 알림 전체 노출 ── */
+  const expandBtn  = document.getElementById('expandBtn');
+  const extraCards = document.getElementById('extra-point');
+
+  expandBtn.addEventListener('click', () => {
+    const isExpanded = expandBtn.getAttribute('aria-expanded') === 'true';
+
+    if (isExpanded) {
+      extraCards.classList.remove('visible');
+      expandBtn.setAttribute('aria-expanded', 'false');
+      expandBtn.classList.remove('expanded');
+      expandBtn.innerHTML = `
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round">
+          <polyline points="6 9 12 15 18 9"/>
+        </svg>
+        +2 알림 더보기`;
+    } else {
+      extraCards.classList.add('visible');
+      expandBtn.setAttribute('aria-expanded', 'true');
+      expandBtn.classList.add('expanded');
+      expandBtn.innerHTML = `
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round">
+          <polyline points="6 9 12 15 18 9"/>
+        </svg>
+        접기`;
+    }
   });
 </script>
 </body>
