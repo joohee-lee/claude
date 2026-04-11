@@ -1,0 +1,519 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0" />
+  <title>알림센터</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: -apple-system, 'Apple SD Gothic Neo', 'Noto Sans KR', sans-serif;
+      background: #f5f5f5;
+      display: flex;
+      justify-content: center;
+      align-items: flex-start;
+      min-height: 100vh;
+    }
+
+    .phone-frame {
+      width: 390px;
+      min-height: 100vh;
+      background: #f5f5f5;
+      position: relative;
+      overflow: hidden;
+    }
+
+    /* Status Bar */
+    .status-bar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 12px 20px 6px;
+      background: #fff;
+    }
+
+    .status-time {
+      font-size: 15px;
+      font-weight: 600;
+      color: #000;
+    }
+
+    .status-icons {
+      display: flex;
+      align-items: center;
+      gap: 5px;
+    }
+
+    .status-icons svg {
+      width: 16px;
+      height: 16px;
+      fill: #000;
+    }
+
+    .battery-indicator {
+      display: flex;
+      align-items: center;
+      gap: 3px;
+      font-size: 12px;
+      font-weight: 600;
+    }
+
+    .battery-box {
+      background: #f5c518;
+      color: #000;
+      font-size: 11px;
+      font-weight: 700;
+      padding: 2px 5px;
+      border-radius: 4px;
+    }
+
+    /* Header */
+    .header {
+      background: #fff;
+      padding: 10px 20px 0;
+    }
+
+    .header-top {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding-bottom: 12px;
+    }
+
+    .header-title {
+      font-size: 22px;
+      font-weight: 700;
+      color: #111;
+    }
+
+    .header-icons {
+      display: flex;
+      gap: 16px;
+      align-items: center;
+    }
+
+    .icon-btn {
+      background: none;
+      border: none;
+      cursor: pointer;
+      padding: 4px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #333;
+    }
+
+    .icon-btn svg {
+      width: 24px;
+      height: 24px;
+    }
+
+    /* Tab Bar */
+    .tab-bar {
+      display: flex;
+      border-bottom: 1px solid #e8e8e8;
+    }
+
+    .tab {
+      flex: 1;
+      text-align: center;
+      padding: 12px 0;
+      font-size: 16px;
+      font-weight: 500;
+      color: #999;
+      cursor: pointer;
+      position: relative;
+    }
+
+    .tab.active {
+      color: #111;
+      font-weight: 700;
+    }
+
+    .tab.active::after {
+      content: '';
+      position: absolute;
+      bottom: -1px;
+      left: 0;
+      right: 0;
+      height: 2px;
+      background: #111;
+    }
+
+    /* Ad Banner */
+    .ad-banner {
+      background: #fff;
+      display: flex;
+      align-items: center;
+      padding: 12px 16px;
+      gap: 12px;
+      position: relative;
+      margin-bottom: 8px;
+    }
+
+    .ad-label {
+      position: absolute;
+      top: 12px;
+      right: 12px;
+      font-size: 11px;
+      color: #999;
+      border: 1px solid #ddd;
+      padding: 2px 6px;
+      border-radius: 3px;
+    }
+
+    .ad-image {
+      width: 72px;
+      height: 72px;
+      border-radius: 8px;
+      background: linear-gradient(135deg, #1a5276, #2980b9);
+      flex-shrink: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      overflow: hidden;
+      position: relative;
+    }
+
+    .ad-image-inner {
+      width: 100%;
+      height: 100%;
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-end;
+      align-items: flex-start;
+      padding: 6px;
+    }
+
+    .ad-discount-badge {
+      background: #e74c3c;
+      color: #fff;
+      font-size: 11px;
+      font-weight: 700;
+      padding: 2px 5px;
+      border-radius: 3px;
+    }
+
+    .ad-content {
+      flex: 1;
+      padding-right: 36px;
+    }
+
+    .ad-title {
+      font-size: 15px;
+      font-weight: 700;
+      color: #111;
+      margin-bottom: 4px;
+    }
+
+    .ad-subtitle {
+      font-size: 13px;
+      color: #555;
+      margin-bottom: 2px;
+    }
+
+    .ad-category {
+      font-size: 11px;
+      color: #999;
+    }
+
+    /* Section */
+    .section {
+      padding: 16px 16px 8px;
+    }
+
+    .section-title {
+      font-size: 15px;
+      font-weight: 700;
+      color: #111;
+      margin-bottom: 10px;
+    }
+
+    /* Notification Card */
+    .notification-card {
+      background: #fff;
+      border-radius: 12px;
+      padding: 16px;
+      margin-bottom: 8px;
+      position: relative;
+    }
+
+    .notification-header {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      margin-bottom: 8px;
+    }
+
+    .notification-icon {
+      width: 28px;
+      height: 28px;
+      border-radius: 50%;
+      flex-shrink: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 12px;
+      font-weight: 700;
+    }
+
+    .icon-naver-plus {
+      background: #03c75a;
+      color: #fff;
+      font-size: 10px;
+      font-weight: 800;
+      letter-spacing: -0.5px;
+    }
+
+    .icon-juyoung {
+      background: #1a5276;
+      color: #fff;
+      font-size: 9px;
+    }
+
+    .notification-sender {
+      font-size: 14px;
+      font-weight: 600;
+      color: #111;
+    }
+
+    .notification-time {
+      font-size: 12px;
+      color: #999;
+      margin-left: 4px;
+    }
+
+    .notification-more {
+      position: absolute;
+      top: 14px;
+      right: 14px;
+      background: none;
+      border: none;
+      cursor: pointer;
+      color: #bbb;
+      font-size: 18px;
+      line-height: 1;
+      padding: 0 4px;
+    }
+
+    .notification-subject {
+      font-size: 14px;
+      font-weight: 700;
+      color: #111;
+      margin-bottom: 6px;
+    }
+
+    .notification-body {
+      font-size: 13px;
+      color: #555;
+      line-height: 1.5;
+    }
+
+    /* Previous Notifications */
+    .filter-bar {
+      display: flex;
+      gap: 8px;
+      overflow-x: auto;
+      padding: 0 16px 12px;
+      scrollbar-width: none;
+    }
+
+    .filter-bar::-webkit-scrollbar {
+      display: none;
+    }
+
+    .filter-chip {
+      flex-shrink: 0;
+      padding: 8px 16px;
+      border-radius: 20px;
+      font-size: 13px;
+      font-weight: 500;
+      cursor: pointer;
+      border: 1px solid #e0e0e0;
+      background: #fff;
+      color: #555;
+    }
+
+    .filter-chip.active {
+      background: #111;
+      color: #fff;
+      border-color: #111;
+    }
+
+    .filter-chip.more {
+      padding: 8px 10px;
+      display: flex;
+      align-items: center;
+    }
+
+    /* Point/Pay Notification */
+    .icon-pay {
+      background: #03c75a;
+      color: #fff;
+      font-size: 10px;
+      font-weight: 700;
+      border-radius: 4px !important;
+      width: 28px;
+      height: 20px;
+      border-radius: 4px;
+    }
+
+    .notification-more-link {
+      font-size: 12px;
+      color: #888;
+      margin-top: 6px;
+    }
+
+    .icon-naver-travel {
+      background: #1ec800;
+      color: #fff;
+    }
+
+    /* Divider */
+    .divider {
+      height: 8px;
+      background: #f5f5f5;
+    }
+  </style>
+</head>
+<body>
+  <div class="phone-frame">
+
+    <!-- Status Bar -->
+    <div class="status-bar">
+      <span class="status-time">15:14 ▶</span>
+      <div class="status-icons">
+        <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+          <path d="M1 1l22 22M16.72 11.06A10.94 10.94 0 0 1 19 12.55M5 12.55a10.94 10.94 0 0 1 5.17-2.39M10.71 5.05A16 16 0 0 1 22.56 9M1.42 9a15.91 15.91 0 0 1 4.7-2.88M8.53 16.11a6 6 0 0 1 6.95 0M12 20h.01" stroke="#000" stroke-width="2" fill="none" stroke-linecap="round"/>
+        </svg>
+        <div class="battery-indicator">
+          <span>5G</span>
+          <span class="battery-box">60</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Header -->
+    <div class="header">
+      <div class="header-top">
+        <span class="header-title">알림센터</span>
+        <div class="header-icons">
+          <button class="icon-btn" aria-label="설정">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <circle cx="12" cy="12" r="3"/>
+              <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83-2.83l.06-.06A1.65 1.65 0 0 0 4.68 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 2.83-2.83l.06.06A1.65 1.65 0 0 0 9 4.68a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 2.83l-.06.06A1.65 1.65 0 0 0 19.4 9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/>
+            </svg>
+          </button>
+          <button class="icon-btn" aria-label="닫기">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round">
+              <line x1="18" y1="6" x2="6" y2="18"/>
+              <line x1="6" y1="6" x2="18" y2="18"/>
+            </svg>
+          </button>
+        </div>
+      </div>
+
+      <!-- Tab Bar -->
+      <div class="tab-bar">
+        <div class="tab active">알림</div>
+        <div class="tab">대화</div>
+      </div>
+    </div>
+
+    <!-- Ad Banner -->
+    <div class="ad-banner">
+      <div class="ad-image">
+        <div class="ad-image-inner">
+          <div class="ad-discount-badge">46% 할인</div>
+        </div>
+      </div>
+      <div class="ad-content">
+        <div class="ad-title">관절엔 콘드로이친 1200</div>
+        <div class="ad-subtitle">헬시페스타 특가!</div>
+        <div class="ad-category">건강기능식품광고</div>
+      </div>
+      <span class="ad-label">AD</span>
+    </div>
+
+    <div class="divider"></div>
+
+    <!-- Today's Notifications -->
+    <div class="section">
+      <div class="section-title">오늘 받은 알림</div>
+
+      <!-- Naver Plus Store -->
+      <div class="notification-card">
+        <div class="notification-header">
+          <div class="notification-icon icon-naver-plus">N+</div>
+          <span class="notification-sender">네이버플러스 스토어</span>
+          <span class="notification-time">· 4시간 전</span>
+        </div>
+        <button class="notification-more">⋮</button>
+        <div class="notification-subject">🔥 가구 빅 페스타 🔥</div>
+        <div class="notification-body">쭈리님, 네이버 고객들이 많이 찾은 가구 브랜드 단 일주일만 특가 할인해요 👉</div>
+      </div>
+
+      <!-- Juyoung NS -->
+      <div class="notification-card">
+        <div class="notification-header">
+          <div class="notification-icon icon-juyoung">주영<br>NS</div>
+          <span class="notification-sender">주영엔에스</span>
+          <span class="notification-time">· 5시간 전</span>
+        </div>
+        <button class="notification-more">⋮</button>
+        <div class="notification-subject">🎁 콘드로이친&뼈엔엠비피 본사 특가</div>
+        <div class="notification-body">✨ 본사 최대 특가 ✨ 헬시페스타 종료 하루 전! 오늘 아침 11시에는 특별 라이브 혜택까지 🎉</div>
+      </div>
+    </div>
+
+    <div class="divider"></div>
+
+    <!-- Previous Notifications -->
+    <div class="section">
+      <div class="section-title">이전 알림</div>
+    </div>
+
+    <!-- Filter Chips -->
+    <div class="filter-bar">
+      <div class="filter-chip active">전체</div>
+      <div class="filter-chip">중요알림</div>
+      <div class="filter-chip">결제·배송</div>
+      <div class="filter-chip">혜택·이벤트</div>
+      <div class="filter-chip more">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round">
+          <polyline points="6 9 12 15 18 9"/>
+        </svg>
+      </div>
+    </div>
+
+    <!-- Point Notification -->
+    <div style="padding: 0 16px;">
+      <div class="notification-card">
+        <div class="notification-header">
+          <div class="notification-icon icon-pay" style="background:#03c75a; border-radius:4px; font-size:9px; font-weight:800; color:#fff; width:32px; height:20px; display:flex; align-items:center; justify-content:center;">pay</div>
+          <span class="notification-sender">포인트적립</span>
+          <span class="notification-time">· 어제 오후 10:24</span>
+        </div>
+        <button class="notification-more">⋮</button>
+        <div class="notification-body">[컬리N마트] [브로클린688] 호주... 포인트 112원이 적립되었어요.</div>
+        <div class="notification-more-link">+2 알림 더보기</div>
+      </div>
+
+      <!-- Naver Travel (partially visible) -->
+      <div class="notification-card" style="overflow:hidden; max-height:48px;">
+        <div class="notification-header">
+          <div class="notification-icon icon-naver-travel" style="background:#1ec800; color:#fff; font-size:9px;">N여행</div>
+          <span class="notification-sender">네이버여행샵픽</span>
+          <span class="notification-time">· 어제 오후 08:5...</span>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</body>
+</html>
