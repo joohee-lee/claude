@@ -205,6 +205,9 @@
     .noti-icon--security  { background: #e74c3c; font-size: 9px; }
     .noti-icon--delivery  { background: #f39c12; font-size: 9px; }
     .noti-icon--benefit   { background: #8e44ad; font-size: 9px; }
+    .noti-icon--auth      { background: #2471a3; font-size: 9px; }
+    .noti-icon--activity  { background: #17a589; font-size: 9px; }
+    .noti-icon--finance   { background: #1e8449; font-size: 9px; }
 
     .noti-sender { font-size: 14px; font-weight: 600; color: #111; }
     .noti-time   { font-size: 12px; color: #999; }
@@ -356,6 +359,15 @@
             <button class="filter-btn" type="button" aria-pressed="false" data-target="cat-benefit">혜택·이벤트</button>
           </li>
           <li>
+            <button class="filter-btn" type="button" aria-pressed="false" data-target="cat-auth">회원인증</button>
+          </li>
+          <li>
+            <button class="filter-btn" type="button" aria-pressed="false" data-target="cat-activity">활동소식</button>
+          </li>
+          <li>
+            <button class="filter-btn" type="button" aria-pressed="false" data-target="cat-finance">금융자산</button>
+          </li>
+          <li>
             <button class="filter-btn filter-btn--more" type="button" aria-label="카테고리 더보기">
               <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round">
                 <polyline points="6 9 12 15 18 9"/>
@@ -486,6 +498,109 @@
             <button class="noti-more-btn" type="button" aria-label="더보기">⋮</button>
             <h3>🌸 올영세일 D-1 미리보기</h3>
             <p class="noti-body">내일부터 시작되는 올영세일! 장바구니 담아두고 자정에 바로 구매하세요 🛒</p>
+          </article>
+        </div>
+
+        <!-- ── 회원인증 ── -->
+        <div id="cat-auth">
+          <p class="cat-header">회원인증</p>
+
+          <article class="noti-card">
+            <header class="noti-card-header">
+              <span class="noti-icon noti-icon--auth" aria-hidden="true">인증</span>
+              <strong class="noti-sender">네이버 인증센터</strong>
+              <time class="noti-time">· 어제 오후 02:10</time>
+            </header>
+            <button class="noti-more-btn" type="button" aria-label="더보기">⋮</button>
+            <h3>📱 휴대폰 번호 인증 완료</h3>
+            <p class="noti-body">010-****-5678 번호로 본인인증이 완료되었어요. 본인이 아니라면 고객센터로 문의하세요.</p>
+          </article>
+
+          <article class="noti-card">
+            <header class="noti-card-header">
+              <span class="noti-icon noti-icon--auth" aria-hidden="true">인증</span>
+              <strong class="noti-sender">PASS 인증</strong>
+              <time class="noti-time">· 이틀 전 오전 11:30</time>
+            </header>
+            <button class="noti-more-btn" type="button" aria-label="더보기">⋮</button>
+            <h3>✅ 간편 로그인 인증 요청</h3>
+            <p class="noti-body">올리브영 앱에서 PASS 간편 로그인 인증이 요청되었어요. 본인이 요청했다면 확인을 눌러주세요.</p>
+          </article>
+        </div>
+
+        <!-- ── 활동소식 ── -->
+        <div id="cat-activity">
+          <p class="cat-header">활동소식</p>
+
+          <article class="noti-card">
+            <header class="noti-card-header">
+              <span class="noti-icon noti-icon--activity" aria-hidden="true">활동</span>
+              <strong class="noti-sender">네이버 블로그</strong>
+              <time class="noti-time">· 어제 오전 09:45</time>
+            </header>
+            <button class="noti-more-btn" type="button" aria-label="더보기">⋮</button>
+            <h3>💬 내 글에 댓글이 달렸어요</h3>
+            <p class="noti-body">작성하신 [봄 제주 여행 후기] 포스트에 "여행님"이 댓글을 남겼어요.</p>
+          </article>
+
+          <article class="noti-card">
+            <header class="noti-card-header">
+              <span class="noti-icon noti-icon--activity" aria-hidden="true">활동</span>
+              <strong class="noti-sender">네이버 카페</strong>
+              <time class="noti-time">· 이틀 전 오후 04:20</time>
+            </header>
+            <button class="noti-more-btn" type="button" aria-label="더보기">⋮</button>
+            <h3>👍 게시글에 좋아요가 눌렸어요</h3>
+            <p class="noti-body">가입하신 [맛집탐방 모임] 카페에서 내 글이 12명에게 좋아요를 받았어요.</p>
+          </article>
+
+          <article class="noti-card">
+            <header class="noti-card-header">
+              <span class="noti-icon noti-icon--activity" aria-hidden="true">활동</span>
+              <strong class="noti-sender">네이버 지식iN</strong>
+              <time class="noti-time">· 3일 전 오후 01:05</time>
+            </header>
+            <button class="noti-more-btn" type="button" aria-label="더보기">⋮</button>
+            <h3>🏆 채택 답변 알림</h3>
+            <p class="noti-body">작성하신 답변이 채택되었어요! 포인트 50원이 지급되었습니다.</p>
+          </article>
+        </div>
+
+        <!-- ── 금융자산 ── -->
+        <div id="cat-finance">
+          <p class="cat-header">금융자산</p>
+
+          <article class="noti-card">
+            <header class="noti-card-header">
+              <span class="noti-icon noti-icon--finance" aria-hidden="true">금융</span>
+              <strong class="noti-sender">네이버페이 증권</strong>
+              <time class="noti-time">· 어제 오전 08:30</time>
+            </header>
+            <button class="noti-more-btn" type="button" aria-label="더보기">⋮</button>
+            <h3>📈 관심 종목 상한가 도달</h3>
+            <p class="noti-body">관심 등록하신 [삼성전자]가 전일 대비 +5.2% 상승해 목표가에 도달했어요.</p>
+          </article>
+
+          <article class="noti-card">
+            <header class="noti-card-header">
+              <span class="noti-icon noti-icon--finance" aria-hidden="true">금융</span>
+              <strong class="noti-sender">네이버페이 통장</strong>
+              <time class="noti-time">· 이틀 전 오후 03:00</time>
+            </header>
+            <button class="noti-more-btn" type="button" aria-label="더보기">⋮</button>
+            <h3>💰 월 이자 지급 안내</h3>
+            <p class="noti-body">네이버페이 머니 통장 이자 1,240원이 입금되었어요. 연 3.0% 적용 기준이에요.</p>
+          </article>
+
+          <article class="noti-card">
+            <header class="noti-card-header">
+              <span class="noti-icon noti-icon--finance" aria-hidden="true">금융</span>
+              <strong class="noti-sender">네이버페이</strong>
+              <time class="noti-time">· 3일 전 오전 10:15</time>
+            </header>
+            <button class="noti-more-btn" type="button" aria-label="더보기">⋮</button>
+            <h3>🏦 자동이체 출금 예정 안내</h3>
+            <p class="noti-body">내일 오전 9시에 정기 자동이체 30,000원이 출금될 예정이에요. 잔액을 확인하세요.</p>
           </article>
         </div>
 
