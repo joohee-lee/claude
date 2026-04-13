@@ -1,0 +1,262 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>sibling-index() 애니메이션 예제</title>
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: 'Segoe UI', sans-serif;
+      background: #0f0f1a;
+      color: #fff;
+      padding: 40px 20px;
+      min-height: 100vh;
+    }
+
+    h1 {
+      text-align: center;
+      font-size: 1.8rem;
+      margin-bottom: 8px;
+      color: #a78bfa;
+    }
+
+    .subtitle {
+      text-align: center;
+      font-size: 0.9rem;
+      color: #6b7280;
+      margin-bottom: 60px;
+    }
+
+    .section {
+      max-width: 800px;
+      margin: 0 auto 60px;
+    }
+
+    .section-title {
+      font-size: 1rem;
+      color: #9ca3af;
+      margin-bottom: 6px;
+      letter-spacing: 0.05em;
+      text-transform: uppercase;
+    }
+
+    .code-hint {
+      font-family: monospace;
+      font-size: 0.78rem;
+      color: #6366f1;
+      margin-bottom: 24px;
+      background: #1e1e2e;
+      padding: 8px 12px;
+      border-radius: 6px;
+      border-left: 3px solid #6366f1;
+    }
+
+    /* ─── 예제 1: 웨이브 바 ─────────────────────────────── */
+    .wave-bars {
+      display: flex;
+      align-items: flex-end;
+      gap: 6px;
+      height: 80px;
+      padding: 10px 0;
+    }
+
+    .wave-bars .bar {
+      flex: 1;
+      background: linear-gradient(to top, #6366f1, #a78bfa);
+      border-radius: 4px 4px 0 0;
+      animation: wave 1.2s ease-in-out infinite alternate;
+      /* sibling-index() 사용: 각 바의 딜레이를 인덱스 기반으로 설정 */
+      animation-delay: calc((sibling-index() - 1) * 0.1s);
+    }
+
+    @keyframes wave {
+      from { height: 15px; opacity: 0.4; }
+      to   { height: 70px; opacity: 1; }
+    }
+
+    /* ─── 예제 2: 컬러 캐스케이드 ──────────────────────── */
+    .cascade {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+
+    .cascade .dot {
+      width: 48px;
+      height: 48px;
+      border-radius: 50%;
+      animation: colorPop 2.4s ease-in-out infinite;
+      /* sibling-index()로 각 점마다 딜레이 & 색상 오프셋 */
+      animation-delay: calc((sibling-index() - 1) * 0.2s);
+      background: hsl(calc((sibling-index() - 1) * 30deg), 80%, 60%);
+    }
+
+    @keyframes colorPop {
+      0%, 100% { transform: scale(1);    filter: brightness(0.7); }
+      50%       { transform: scale(1.35); filter: brightness(1.3); }
+    }
+
+    /* ─── 예제 3: 텍스트 글자별 낙하 ──────────────────── */
+    .text-drop {
+      font-size: 3rem;
+      font-weight: 800;
+      display: flex;
+      gap: 2px;
+      justify-content: center;
+      overflow: hidden;
+      padding: 10px 0 4px;
+    }
+
+    .text-drop .char {
+      display: inline-block;
+      animation: dropIn 0.6s cubic-bezier(0.34, 1.56, 0.64, 1) both infinite;
+      animation-delay: calc((sibling-index() - 1) * 0.08s);
+      /* 색상도 인덱스로 분산 */
+      color: hsl(calc((sibling-index() - 1) * 20deg + 240deg), 90%, 70%);
+    }
+
+    @keyframes dropIn {
+      0%   { opacity: 0; transform: translateY(-60px) rotate(-10deg); }
+      60%  { opacity: 1; transform: translateY(0)    rotate(2deg); }
+      80%  { transform: translateY(-6px) rotate(-1deg); }
+      100% { transform: translateY(0)    rotate(0deg); }
+    }
+
+    /* ─── 예제 4: 카드 슬라이드인 ──────────────────────── */
+    .cards {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+      gap: 14px;
+    }
+
+    .cards .card {
+      background: #1e1e2e;
+      border: 1px solid #2d2d44;
+      border-radius: 12px;
+      padding: 18px 14px;
+      animation: slideUp 0.5s ease both infinite;
+      animation-delay: calc((sibling-index() - 1) * 0.15s);
+    }
+
+    @keyframes slideUp {
+      0%   { opacity: 0; transform: translateY(30px); }
+      60%  { opacity: 1; transform: translateY(-4px); }
+      100% { transform: translateY(0); }
+    }
+
+    .card .card-icon {
+      font-size: 1.8rem;
+      margin-bottom: 8px;
+    }
+
+    .card .card-label {
+      font-size: 0.8rem;
+      color: #9ca3af;
+    }
+
+    /* ─── 예제 5: 스태거드 라인 ────────────────────────── */
+    .stagger-lines {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .stagger-lines .line {
+      height: 10px;
+      border-radius: 5px;
+      background: linear-gradient(90deg, #6366f1, #a78bfa, #ec4899);
+      animation: expandLine 1.5s ease-in-out infinite alternate;
+      animation-delay: calc((sibling-index() - 1) * 0.18s);
+      /* 너비도 인덱스 기반 */
+      width: calc(30% + (sibling-index() * 7%));
+    }
+
+    @keyframes expandLine {
+      from { transform: scaleX(0.3); opacity: 0.3; transform-origin: left; }
+      to   { transform: scaleX(1);   opacity: 1;   transform-origin: left; }
+    }
+  </style>
+</head>
+<body>
+
+  <h1>sibling-index() 애니메이션</h1>
+  <p class="subtitle">CSS <code>sibling-index()</code>를 활용해 형제 요소 순서 기반으로 딜레이·색상을 자동 부여</p>
+
+  <!-- 예제 1 -->
+  <div class="section">
+    <div class="section-title">예제 1 — 뮤직 이퀄라이저 웨이브</div>
+    <div class="code-hint">animation-delay: calc((sibling-index() - 1) * 0.1s);</div>
+    <div class="wave-bars">
+      <div class="bar"></div><div class="bar"></div><div class="bar"></div>
+      <div class="bar"></div><div class="bar"></div><div class="bar"></div>
+      <div class="bar"></div><div class="bar"></div><div class="bar"></div>
+      <div class="bar"></div><div class="bar"></div><div class="bar"></div>
+      <div class="bar"></div><div class="bar"></div><div class="bar"></div>
+    </div>
+  </div>
+
+  <!-- 예제 2 -->
+  <div class="section">
+    <div class="section-title">예제 2 — 컬러 캐스케이드 도트</div>
+    <div class="code-hint">
+      animation-delay: calc((sibling-index() - 1) * 0.2s);<br>
+      background: hsl(calc((sibling-index() - 1) * 30deg), 80%, 60%);
+    </div>
+    <div class="cascade">
+      <div class="dot"></div><div class="dot"></div><div class="dot"></div>
+      <div class="dot"></div><div class="dot"></div><div class="dot"></div>
+      <div class="dot"></div><div class="dot"></div><div class="dot"></div>
+      <div class="dot"></div><div class="dot"></div><div class="dot"></div>
+    </div>
+  </div>
+
+  <!-- 예제 3 -->
+  <div class="section">
+    <div class="section-title">예제 3 — 글자별 낙하 애니메이션</div>
+    <div class="code-hint">animation-delay: calc((sibling-index() - 1) * 0.08s);</div>
+    <div class="text-drop">
+      <span class="char">C</span><span class="char">L</span><span class="char">A</span>
+      <span class="char">U</span><span class="char">D</span><span class="char">E</span>
+      <span class="char">&nbsp;</span>
+      <span class="char">A</span><span class="char">I</span>
+    </div>
+  </div>
+
+  <!-- 예제 4 -->
+  <div class="section">
+    <div class="section-title">예제 4 — 카드 슬라이드인</div>
+    <div class="code-hint">animation-delay: calc((sibling-index() - 1) * 0.15s);</div>
+    <div class="cards">
+      <div class="card"><div class="card-icon">🎨</div><div class="card-label">디자인</div></div>
+      <div class="card"><div class="card-icon">⚡</div><div class="card-label">성능</div></div>
+      <div class="card"><div class="card-icon">🔒</div><div class="card-label">보안</div></div>
+      <div class="card"><div class="card-icon">📱</div><div class="card-label">반응형</div></div>
+      <div class="card"><div class="card-icon">🌐</div><div class="card-label">접근성</div></div>
+      <div class="card"><div class="card-icon">🚀</div><div class="card-label">배포</div></div>
+    </div>
+  </div>
+
+  <!-- 예제 5 -->
+  <div class="section">
+    <div class="section-title">예제 5 — 스태거드 프로그레스 라인</div>
+    <div class="code-hint">
+      animation-delay: calc((sibling-index() - 1) * 0.18s);<br>
+      width: calc(30% + (sibling-index() * 7%));
+    </div>
+    <div class="stagger-lines">
+      <div class="line"></div>
+      <div class="line"></div>
+      <div class="line"></div>
+      <div class="line"></div>
+      <div class="line"></div>
+    </div>
+  </div>
+
+</body>
+</html>
